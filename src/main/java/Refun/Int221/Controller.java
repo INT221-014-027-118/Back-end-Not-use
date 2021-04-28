@@ -6,8 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,6 +21,7 @@ public class Controller {
 	private List<Keyboard>  keybords = new ArrayList<>(); 
 	private List<Headset>  headsets = new ArrayList<>(); 
 	private List<Brand> brand = new ArrayList<Brand>();
+	private List<Product> product = new ArrayList<Product>();
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -35,7 +39,7 @@ public class Controller {
 	
 	@GetMapping("/color")
 	public List<Color> getColor() {
-		String sql = "select * from color";
+		String sql = "select * from color;";
 		this.colors = this.jdbcTemplate.query(sql,BeanPropertyRowMapper.newInstance(Color.class));
 		return this.colors;
 	}
@@ -43,7 +47,7 @@ public class Controller {
 	@GetMapping("/mouse")
 	public List<Mouse> getMouse() {
 		String sql = "select productId,productName,price,description,brandName,typeName from product p,type t,brand b where p.brandid = b.productid and"
-				+ "p.typeid = t.typeid and typename = 'mouse'";
+				+ "p.typeid = t.typeid and typename = 'mouse';";
 		this.mouses = this.jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Mouse.class));
 		return this.mouses;
 	}
@@ -51,7 +55,7 @@ public class Controller {
 	@GetMapping("/keybord")
 	public List<Keyboard> getKeybord() {
 		String sql = "select productId,productName,price,description,brandName,typeName from product p,type t,brand b where p.brandid = b.productid and"
-				+ "p.typeid = t.typeid and typename = 'keybord'";
+				+ "p.typeid = t.typeid and typename = 'keybord';";
 		this.keybords = this.jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Keyboard.class));
 		return this.keybords;
 	}
@@ -60,24 +64,38 @@ public class Controller {
 	@GetMapping("/headset")
 	public List<Headset> getHeadset() {
 		String sql = "select productId,productName,price,description,brandName,typeName from product p,type t,brand b where p.brandid = b.productid and"
-				+ "p.typeid = t.typeid and typename = 'headset'";
+				+ "p.typeid = t.typeid and typename = 'headset';";
 		this.headsets = this.jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Headset.class));
 		return this.headsets;
 	}
 	
 	@GetMapping("/brand")
 	public List<Brand> getBrand() {
-		String sql = "select * from brand";
+		String sql = "select * from brand;";
 		this.brand = this.jdbcTemplate.query(sql,BeanPropertyRowMapper.newInstance(Brand.class));
 		return this.brand;
 	}
 	
-	@PostMapping("/mouse/post")
-	public void addMouse() {
-		String sql = "INSERT INTO Mouses (id,name,price,date,descripion,band) VALUES (?,?,?,?,?,?)";
-		this.jdbcTemplate.update(sql,"","","","","","");
+	@PostMapping("/product/post")
+	public void addProduct() {
+		String sql = "INSERT INTO product (productId,productName,price,description,brandId,typeId,warranty,launchDate,imageUrl) VALUES"
+				+ " (?,?,?,?,?,?,?,?,?);";
+		this.jdbcTemplate.update(sql,"","","","","","","","","");
 		
 	}
+	
+	@DeleteMapping("/deleteProduct/{id}")
+	public void deleteProduct(@PathVariable int id) {
+		String sql = "DELETE FROM product WHERE productId = " + id;
+		this.jdbcTemplate.execute(sql);
+	}
+	
+	
+	@PutMapping("/editProduct/{id}")
+	public void editProduct() {
+		
+	}
+	
 	
 //	@GetMapping("/mouse/post")
 //	public  List<Mouse> getPostMouse() {
