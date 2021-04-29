@@ -1,6 +1,6 @@
-package Refun.Int221;
+package RefunGarantee.Int221.Model;
 
-public class Keyboard {
+public class Headset {
 
 	private int productId;
 	private String productName;
@@ -10,10 +10,10 @@ public class Keyboard {
 	private String brandName;
 	private String type;
 
-	public Keyboard() {
+	public Headset() {
 	}
 
-	public Keyboard(int productId, String productName, double price, String description,  String brandName,
+	public Headset(int productId, String productName, double price, String description,  String brandName,
 			String type) {
 		this.productId = productId;
 		this.productName = productName;
@@ -56,7 +56,7 @@ public class Keyboard {
 		this.description = description;
 	}
 
-	
+
 
 	public String getBrandName() {
 		return brandName;
