@@ -23,14 +23,10 @@ public class ProductController {
 
 	}
 
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+
 	@GetMapping("/{id}")
-	public Optional<Product> getProductById(@PathVariable long id) {
-		if(this.productRepository.existsById(id) ){
-			Optional<Product> p = productRepository.findById(id) ;
-			return p;
-		}else
-			throw new NotFoundException(id);
+	public Optional<Product> getProductById(@PathVariable(value = "id") long id) {
+		return productRepository.findById(id);
 
 	}
 
@@ -62,10 +58,11 @@ public class ProductController {
 
 	}
 
-	@GetMapping("/name")
-	public void getProductName() {
-		for(int i =0 ;i < productRepository.count(); i++){
-		System.out.println(productRepository.findAll().get(i).getProductName());
-	}}
+	@GetMapping("/name/{id}")
+	public void getProductName(@PathVariable long id) {
+		System.out.println(this.productRepository.findById(id)) ;
+
+
+	}
 
 }
