@@ -12,6 +12,7 @@ import RefunGarantee.Int221.Repository.ProductRepository;
 
 @RestController
 @RequestMapping("/product")
+@CrossOrigin(origins = "*")
 public class ProductController {
 	
 	@Autowired

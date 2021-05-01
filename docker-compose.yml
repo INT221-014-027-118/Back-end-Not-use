@@ -1,0 +1,6 @@
+services:
+  backend:
+    build: .
+    container_name: backend
+    ports:
+    - '9091:9091'
