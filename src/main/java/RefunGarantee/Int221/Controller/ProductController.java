@@ -1,9 +1,9 @@
 package RefunGarantee.Int221.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import RefunGarantee.Int221.Exception.NotFoundException;
-import RefunGarantee.Int221.Exception.NotFoundNameException;
 import RefunGarantee.Int221.Exception.SameProductNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,8 @@ import RefunGarantee.Int221.Repository.ProductRepository;
 public class ProductController {
 
 	Product p;
-	
+	List<Long> list=new ArrayList<Long>();
+
 	@Autowired
 	private ProductRepository productRepository;
 	
@@ -26,6 +27,7 @@ public class ProductController {
 		return productRepository.findAll();
 
 	}
+	
 
 
 	@GetMapping("/{id}")
@@ -79,6 +81,18 @@ public class ProductController {
 
 
 
+
+	}
+
+	@GetMapping("id/list")
+	public List<Long> getProductId() {
+		list.clear();
+
+		for (int i = 0; i < productRepository.count(); i++) {
+
+			list.add(productRepository.findAll().get(i).getProductId());
+		}
+		return list;
 
 	}
 
