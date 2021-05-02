@@ -16,11 +16,12 @@ import lombok.*;
 public class Product {
 
 	@Id
-	@Column(name = "productid")
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "productid",nullable = false, unique = true)
 	private long productId;
 
 
-	@Column(name = "productname")
+	@Column(name = "productname" ,nullable = false, unique = false)
 	private String productName;
 
 
@@ -55,5 +56,15 @@ public class Product {
 	@JoinTable(name = "productcolor", joinColumns = @JoinColumn(name = "productid"), inverseJoinColumns = @JoinColumn(name = "colorid"))
 	private List<Color> colors = new ArrayList<>();
 
-
+//	public Product(String productName, double price, String description, Brand brand, Type type, int warranty, Date launchDate, String imageUrl, List<Color> colors) {
+//		this.productName = productName;
+//		this.price = price;
+//		this.description = description;
+//		this.brand = brand;
+//		this.type = type;
+//		this.warranty = warranty;
+//		this.launchDate = launchDate;
+//		this.imageUrl = imageUrl;
+//		this.colors = colors;
+//	}
 }
