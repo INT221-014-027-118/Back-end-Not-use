@@ -65,7 +65,9 @@
                 <version>2.22.2</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
+
                 </configuration>
+
             </plugin>
 
 		</plugins>
