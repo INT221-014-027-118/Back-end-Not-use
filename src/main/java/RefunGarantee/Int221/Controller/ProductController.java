@@ -3,6 +3,7 @@ package RefunGarantee.Int221.Controller;
 import java.util.List;
 import java.util.Optional;
 import RefunGarantee.Int221.Exception.NotFoundException;
+import RefunGarantee.Int221.Exception.NotFoundNameException;
 import RefunGarantee.Int221.Exception.SameProductNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import RefunGarantee.Int221.Repository.ProductRepository;
 @RequestMapping("/product")
 @CrossOrigin(origins = "*")
 public class ProductController {
+
+	Product p;
 	
 	@Autowired
 	private ProductRepository productRepository;
@@ -59,9 +62,21 @@ public class ProductController {
 
 	}
 
-	@GetMapping("/name/{id}")
-	public void getProductName(@PathVariable long id) {
-		System.out.println(this.productRepository.findById(id)) ;
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@GetMapping("getbyname/{name}")
+	public Product getProductByName(@PathVariable("name") String name) {
+		Product product = null;
+		for (int i = 0; i < this.productRepository.count(); i++) {
+			if(this.productRepository.findAll().get(i).getProductName().equals(name)){
+			product = this.productRepository.findAll().get(i);
+
+
+			}
+			}
+
+		return product;
+
+
 
 
 	}
