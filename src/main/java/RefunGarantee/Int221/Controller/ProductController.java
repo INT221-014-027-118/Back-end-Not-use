@@ -45,6 +45,7 @@ public class ProductController {
 	public void deleteProduct(@PathVariable long id) {
         if(this.productRepository.existsById(id) ){
         	this.productRepository.deleteById(id);
+
         }else
         throw new NotFoundException(id);
 	}
