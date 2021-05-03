@@ -51,17 +51,19 @@ public class ProductController {
             throw new NotFoundException(id);
     }
 
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
     @PostMapping("/add")
-    public Product addProduct(@RequestBody Product products) {
+    public void addProduct(@RequestBody Product products) {
         Boolean b = false;
         for (int i = 0; i < productRepository.count(); i++) {
             if (productRepository.findAll().get(i).getProductName().equals(products.getProductName())) {
                 b = true;
+                throw new SameProductNameException(products.getProductName());
             }
         }if (b == false){
             productRepository.save(products);
        }
-        return products;
+
     }
 
     //	@ResponseStatus(HttpStatus.NO_CONTENT)

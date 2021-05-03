@@ -16,6 +16,12 @@ public class ExceptionAdvice {
     String productNotFound(NotFoundException ex){
         return ex.getMessage();
     }
-
+    
+    @ResponseBody
+    @ExceptionHandler(SameProductNameException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    String productSameName(SameProductNameException ex){
+        return ex.getMessage();
+    }
 
 }
