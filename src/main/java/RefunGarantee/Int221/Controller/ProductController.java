@@ -58,9 +58,9 @@ public class ProductController {
             if (productRepository.findAll().get(i).getProductName().equals(products.getProductName())) {
                 b = true;
             }
-        }if (b = false){
+        }if (b == false){
             productRepository.save(products);
-        }
+       }
         return products;
     }
 

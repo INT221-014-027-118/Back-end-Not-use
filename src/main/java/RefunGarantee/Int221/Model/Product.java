@@ -21,7 +21,7 @@ public class Product {
 	private long productId;
 
 
-	@Column(name = "productname" ,nullable = false, unique = false)
+	@Column(name = "productname" ,nullable = false, unique = true)
 	private String productName;
 
 
