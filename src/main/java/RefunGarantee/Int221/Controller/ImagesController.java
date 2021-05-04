@@ -17,7 +17,7 @@ import java.io.IOException;
 public class ImagesController {
 
 
-    private final String path = "./images";
+    private final String path = "./images/";
 
     @GetMapping("/get/{id:.+}")
     public ResponseEntity<byte[]> getImage(@PathVariable("id")String id) throws IOException {
@@ -29,7 +29,7 @@ public class ImagesController {
     }
 
     @PostMapping ("/add/{id}")
-    public ResponseEntity<Object> fileUpload(@RequestParam("File")MultipartFile file,@PathVariable("id")String id)throws IOException{
+    public ResponseEntity<Object> fileUpload(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException{
         System.out.println(file.getContentType());
         File myFile = new File(path + file.getOriginalFilename());
         myFile.createNewFile();
@@ -40,7 +40,7 @@ public class ImagesController {
     }
 
     @PutMapping("/update/{id:.+}")
-    public void changeImage(@RequestParam("File")MultipartFile file,@PathVariable("id")String id)throws IOException {
+    public void changeImage(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException {
         FileOutputStream fos = new FileOutputStream(path+id);
         fos.write(file.getBytes());
         fos.close();
