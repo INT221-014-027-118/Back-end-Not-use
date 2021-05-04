@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/image")
+@CrossOrigin(origins = "*")
 public class ImagesController {
 
 
