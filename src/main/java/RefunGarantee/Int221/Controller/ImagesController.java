@@ -39,7 +39,7 @@ public class ImagesController {
         return  new ResponseEntity<Object>("The File Uploaded Successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/edit/{id:.+}")
+    @PutMapping("/update/{id:.+}")
     public void changeImage(@RequestParam("File")MultipartFile file,@PathVariable("id")String id)throws IOException {
         FileOutputStream fos = new FileOutputStream(path+id);
         fos.write(file.getBytes());

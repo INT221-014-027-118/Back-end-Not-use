@@ -24,4 +24,12 @@ public class ExceptionAdvice {
         return ex.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(NotFoundNameException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String NotFoundName(NotFoundNameException ex){
+        return ex.getMessage();
+    }
+
+
 }
