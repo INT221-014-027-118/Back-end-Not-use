@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import RefunGarantee.Int221.Exception.NotFoundException;
+import RefunGarantee.Int221.Exception.NotFoundNameException;
 import RefunGarantee.Int221.Exception.SameProductNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,26 +24,32 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    //Get all Product
     @GetMapping("/list")
     public List<Product> getProduct() {
         return productRepository.findAll();
 
     }
 
-
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @GetMapping("/{id}")
     public Optional<Product> getProductById(@PathVariable(value = "id") long id) {
-        return productRepository.findById(id);
+        if (this.productRepository.existsById(id)) {
+            return productRepository.findById(id);
+        } else
+            throw new NotFoundException(id);
 
     }
 
+    //Edit Product
     @PutMapping("/update")
     public Product editProduct(@RequestBody Product products) {
         this.productRepository.save(products);
         return products;
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    //Delete Product
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @DeleteMapping("/delete/{id}")
     public void deleteProduct(@PathVariable long id) {
         if (this.productRepository.existsById(id)) {
@@ -51,7 +58,8 @@ public class ProductController {
             throw new NotFoundException(id);
     }
 
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
+    //Add Product
+   @ResponseStatus(HttpStatus.FORBIDDEN)
     @PostMapping("/add")
     public void addProduct(@RequestBody Product products) {
         Boolean b = false;
@@ -66,7 +74,7 @@ public class ProductController {
 
     }
 
-    //	@ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @GetMapping("getbyname/{name}")
     public Product getProductByName(@PathVariable("name") String name) {
         Product product = null;
@@ -74,6 +82,8 @@ public class ProductController {
             if (this.productRepository.findAll().get(i).getProductName().equals(name)) {
                 product = this.productRepository.findAll().get(i);
             }
+        }if(product == null){
+            throw new NotFoundNameException(name);
         }
         return product;
     }
