@@ -6,14 +6,18 @@ package RefunGarantee.Int221.Controller;
 
 import RefunGarantee.Int221.Exception.NotFoundImageException;
 import RefunGarantee.Int221.Exception.SameImageException;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+
 import java.io.*;
 import java.io.IOException;
-
+import java.nio.file.Path;
 
 
 @RestController
@@ -23,11 +27,17 @@ public class ImagesController {
 
 
 
-    private final String path = "./images/";
+    private final Path path = Path.of("./images/");
 
     @GetMapping("/get/{id:.+}")
     public ResponseEntity<byte[]> getImage(@PathVariable("id")String id) throws IOException {
-        FileInputStream fi = new FileInputStream(path+id);
+        Path file = path.resolve(id);
+        Resource resource = new UrlResource(file.toUri());
+
+        //return  resource.getFile();
+
+
+                FileInputStream fi = new FileInputStream(resource.getFile());
         byte[] image = fi.readAllBytes();
         fi.close();
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
