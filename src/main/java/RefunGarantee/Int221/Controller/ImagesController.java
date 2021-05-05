@@ -48,13 +48,18 @@ public class ImagesController {
 
     @PutMapping("/update/{id:.+}")
     public void changeImage(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException {
-        File oldFile = new File(path + id);
-        oldFile.delete();
         File newFile = new File(path + file.getOriginalFilename());
-        newFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(newFile);
-        fos.write(file.getBytes());
-        fos.close();
+        if(newFile.exists()) {
+            throw new SameImageException(file.getOriginalFilename());
+        }else {
+
+            File oldFile = new File(path + id);
+            oldFile.delete();
+            newFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(newFile);
+            fos.write(file.getBytes());
+            fos.close();
+        }
     }
 
     @DeleteMapping("/delete/{id:.+}")
