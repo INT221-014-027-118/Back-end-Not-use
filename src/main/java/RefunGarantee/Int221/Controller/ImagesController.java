@@ -30,8 +30,7 @@ public class ImagesController {
 
 
     private final Path path = Paths.get("images");
-//    private final Path path1 = Path.of("./images/");
-//    private final String path2 = "./images/";
+
     @GetMapping("/get/{id:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable("id")String id) throws IOException {
         Path file = path.resolve(id);
@@ -46,7 +45,7 @@ public class ImagesController {
         throw new NotFoundImageException(id);
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+
     @PostMapping ("/add")
     public ResponseEntity<Object> fileUpload(@RequestParam("refun")MultipartFile file)throws IOException{
         Path file1 = path.resolve(file.getOriginalFilename());
@@ -62,12 +61,12 @@ public class ImagesController {
         return  new ResponseEntity<Object>("The File Uploaded Successfully", HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+
     @PutMapping("/update/{id:.+}")
     public void changeImage(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException {
         Path file1 = path.resolve(id);
         Path file2 = path.resolve(file.getOriginalFilename());
-        Resource resource = new UrlResource(file1.toUri());
+
             File newFile = new File(file2.toUri());
             File oldFile = new File(file1.toUri());
             if(oldFile.exists()) {
@@ -85,9 +84,6 @@ public class ImagesController {
     @DeleteMapping("/delete/{id:.+}")
     public void deleteImage(@PathVariable("id")String id) throws MalformedURLException {
         Path file = path.resolve(id);
-        Resource resource = new UrlResource(file.toUri());
-        //Resource file1 = resource;
-
             File myFile = new File(file.toUri());
             if(myFile.exists()) {
                 myFile.delete();

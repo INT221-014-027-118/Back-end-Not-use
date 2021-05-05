@@ -11,14 +11,10 @@ import java.io.File;
 
 @SpringBootApplication
 public class Int221Application implements CommandLineRunner {
-	
-
-	
 
 	public static void main(String[] args) {
 		SpringApplication.run(Int221Application.class, args);
 	}
-
 
 	@Override
 	public void run(String... args) throws Exception {

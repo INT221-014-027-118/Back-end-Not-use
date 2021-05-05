@@ -31,7 +31,7 @@ public class ProductController {
 
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+
     @GetMapping("/{id}")
     public Optional<Product> getProductById(@PathVariable(value = "id") long id) {
         if (this.productRepository.existsById(id)) {
@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     //Delete Product
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+
     @DeleteMapping("/delete/{id}")
     public void deleteProduct(@PathVariable long id) {
         if (this.productRepository.existsById(id)) {
@@ -58,8 +58,8 @@ public class ProductController {
             throw new NotFoundException(id);
     }
 
+
     //Add Product
-   @ResponseStatus(HttpStatus.FORBIDDEN)
     @PostMapping("/add")
     public void addProduct(@RequestBody Product products) {
         Boolean b = false;
@@ -74,7 +74,7 @@ public class ProductController {
 
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+
     @GetMapping("getbyname/{name}")
     public Product getProductByName(@PathVariable("name") String name) {
         Product product = null;
@@ -88,13 +88,5 @@ public class ProductController {
         return product;
     }
 
-    @GetMapping("id/list")
-    public List<Long> getProductId() {
-        list.clear();
-        for (int i = 0; i < productRepository.count(); i++) {
-            list.add(productRepository.findAll().get(i).getProductId());
-        }
-        return list;
-    }
 
 }
