@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import java.io.*;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @RestController
@@ -27,18 +28,19 @@ public class ImagesController {
 
 
 
-    private final Path path = Path.of("./images/");
+    private final Path path = Paths.get("images");
 
     @GetMapping("/get/{id:.+}")
-    public ResponseEntity<byte[]> getImage(@PathVariable("id")String id) throws IOException {
+    public ResponseEntity<Resource> getImage(@PathVariable("id")String id) throws IOException {
         Path file = path.resolve(id);
         Resource resource = new UrlResource(file.toUri());
+        Resource file1 = resource;
         System.out.println(file.toUri());
         //return  resource.getFile();
-        FileInputStream fi = new FileInputStream(resource.getFile());
-        byte[] image = fi.readAllBytes();
-        fi.close();
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
+//        FileInputStream fi = new FileInputStream(resource.getFile());
+//        byte[] image = fi.readAllBytes();
+//        fi.close();
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(file1);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
