@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 
 import java.io.*;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -29,18 +30,20 @@ public class ImagesController {
 
 
     private final Path path = Paths.get("images");
-
+    private final Path path1 = Path.of("./images/");
+    private final String path2 = "./images/";
     @GetMapping("/get/{id:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable("id")String id) throws IOException {
         Path file = path.resolve(id);
         Resource resource = new UrlResource(file.toUri());
         Resource file1 = resource;
-        System.out.println(file.toUri());
-        //return  resource.getFile();
-//        FileInputStream fi = new FileInputStream(resource.getFile());
-//        byte[] image = fi.readAllBytes();
-//        fi.close();
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(file1);
+       System.out.println(file1.exists());
+        System.out.println(file1.isReadable());
+        if(file1.exists() || file1.isReadable()){
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(file1);
+        }else
+
+        throw new NotFoundImageException(id);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -62,8 +65,11 @@ public class ImagesController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @PutMapping("/update/{id:.+}")
     public void changeImage(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException {
-            File newFile = new File(path + file.getOriginalFilename());
-            File oldFile = new File(path + id);
+        Path file1 = path.resolve(id);
+        Path file2 = path.resolve(file.getOriginalFilename());
+        Resource resource = new UrlResource(file1.toUri());
+            File newFile = new File(file2.toUri());
+            File oldFile = new File(file1.toUri());
             if(oldFile.exists()) {
                 oldFile.delete();
                 newFile.createNewFile();
@@ -77,8 +83,12 @@ public class ImagesController {
     }
 
     @DeleteMapping("/delete/{id:.+}")
-    public void deleteImage(@PathVariable("id")String id){
-            File myFile = new File(path + id);
+    public void deleteImage(@PathVariable("id")String id) throws MalformedURLException {
+        Path file = path.resolve(id);
+        Resource resource = new UrlResource(file.toUri());
+        //Resource file1 = resource;
+
+            File myFile = new File(file.toUri());
             if(myFile.exists()) {
                 myFile.delete();
             }else throw new NotFoundImageException(id);
