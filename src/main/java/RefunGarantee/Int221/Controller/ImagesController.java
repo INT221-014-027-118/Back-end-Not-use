@@ -33,20 +33,20 @@ public class ImagesController {
     public ResponseEntity<byte[]> getImage(@PathVariable("id")String id) throws IOException {
         Path file = path.resolve(id);
         Resource resource = new UrlResource(file.toUri());
-
+        System.out.println(file.toUri());
         //return  resource.getFile();
-
-
-                FileInputStream fi = new FileInputStream(resource.getFile());
+        FileInputStream fi = new FileInputStream(resource.getFile());
         byte[] image = fi.readAllBytes();
         fi.close();
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @PostMapping ("/add")
     public ResponseEntity<Object> fileUpload(@RequestParam("refun")MultipartFile file)throws IOException{
-        File myFile = new File(path + file.getOriginalFilename());
+        Path file1 = path.resolve(file.getOriginalFilename());
+        Resource resource = new UrlResource(file1.toUri());
+        File myFile = new File(resource.getURI());
         if(myFile.exists()) {
             throw new SameImageException(file.getOriginalFilename());
         }else
