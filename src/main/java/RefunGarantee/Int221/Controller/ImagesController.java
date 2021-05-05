@@ -4,6 +4,7 @@ package RefunGarantee.Int221.Controller;
 
 
 
+import RefunGarantee.Int221.Exception.NotFoundImageException;
 import RefunGarantee.Int221.Exception.SameImageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import java.io.*;
 import java.io.IOException;
-import java.util.List;
+
 
 
 @RestController
@@ -46,26 +47,30 @@ public class ImagesController {
         return  new ResponseEntity<Object>("The File Uploaded Successfully", HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @PutMapping("/update/{id:.+}")
     public void changeImage(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException {
-        File newFile = new File(path + file.getOriginalFilename());
-        if(newFile.exists()) {
-            throw new SameImageException(file.getOriginalFilename());
-        }else {
-
+            File newFile = new File(path + file.getOriginalFilename());
             File oldFile = new File(path + id);
-            oldFile.delete();
-            newFile.createNewFile();
-            FileOutputStream fos = new FileOutputStream(newFile);
-            fos.write(file.getBytes());
-            fos.close();
-        }
+            if(oldFile.exists()) {
+                oldFile.delete();
+                newFile.createNewFile();
+                FileOutputStream fos = new FileOutputStream(newFile);
+                fos.write(file.getBytes());
+                fos.close();
+                System.out.println("Success to update file");
+            }else throw new NotFoundImageException(id);
+
+
     }
 
     @DeleteMapping("/delete/{id:.+}")
     public void deleteImage(@PathVariable("id")String id){
             File myFile = new File(path + id);
-            myFile.delete();
+            if(myFile.exists()) {
+                myFile.delete();
+            }else throw new NotFoundImageException(id);
+
         System.out.println(myFile.exists());
     }
 

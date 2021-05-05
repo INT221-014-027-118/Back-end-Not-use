@@ -64,7 +64,7 @@ public class ProductController {
     public void addProduct(@RequestBody Product products) {
         Boolean b = false;
         for (int i = 0; i < productRepository.count(); i++) {
-            if (productRepository.findAll().get(i).getProductName().equals(products.getProductName())) {
+            if (productRepository.findAll().get(i).getProductName().equals(products.getProductName()) || products.getProductId() <=0) {
                 b = true;
                 throw new SameProductNameException(products.getProductName());
             }

@@ -34,9 +34,14 @@ public class ExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(SameImageException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    String SameImage(NotFoundNameException ex){
+    String SameImage(SameImageException ex){
         return ex.getMessage();
     }
 
-
+    @ResponseBody
+    @ExceptionHandler(NotFoundImageException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String NotFoundImageName(NotFoundImageException ex){
+        return ex.getMessage();
+    }
 }
