@@ -49,7 +49,7 @@ public class Product {
 	private Date launchDate;
 
 
-	@Column(name = "imageurl")
+	@Column(name = "imageurl",nullable = false, unique = true)
 	private String imageUrl;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
