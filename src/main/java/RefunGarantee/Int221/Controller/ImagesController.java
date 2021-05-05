@@ -30,8 +30,8 @@ public class ImagesController {
 
 
     private final Path path = Paths.get("images");
-    private final Path path1 = Path.of("./images/");
-    private final String path2 = "./images/";
+//    private final Path path1 = Path.of("./images/");
+//    private final String path2 = "./images/";
     @GetMapping("/get/{id:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable("id")String id) throws IOException {
         Path file = path.resolve(id);

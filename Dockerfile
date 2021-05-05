@@ -4,7 +4,7 @@ WORKDIR /build/
 
 COPY pom.xml /build/
 COPY src /build/src/
-COPY images /build/images/
+
 
 RUN mvn clean package
 RUN mvn package
