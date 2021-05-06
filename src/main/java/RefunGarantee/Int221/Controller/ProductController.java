@@ -46,12 +46,14 @@ public class ProductController {
         for (int i = 0; i < productRepository.count(); i++) {
             if (productRepository.findAll().get(i).getProductName().equals(products.getProductName()) || products.getProductId() <= 0) {
                 b = true;
-            }if((productRepository.getOne(products.getProductId()).getProductName()).equals(products.getProductName())){
-                b = false;
+            }
+        }if((productRepository.getOne(products.getProductId()).getProductName()).equals(products.getProductName())){
+            b = false;
 
-            }else throw new SameProductNameException(products.getProductName());
         }
-
+        if(b==true){
+            throw new SameProductNameException(products.getProductName());
+        }
 
 
         if (b == false){
