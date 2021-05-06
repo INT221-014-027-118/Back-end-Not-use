@@ -1,6 +1,6 @@
 package RefunGarantee.Int221.Controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +8,6 @@ import RefunGarantee.Int221.Exception.NotFoundException;
 import RefunGarantee.Int221.Exception.NotFoundNameException;
 import RefunGarantee.Int221.Exception.SameProductNameException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import RefunGarantee.Int221.Model.Product;
 import RefunGarantee.Int221.Repository.ProductRepository;
@@ -18,8 +17,7 @@ import RefunGarantee.Int221.Repository.ProductRepository;
 @CrossOrigin(origins = "*")
 public class ProductController {
 
-    Product p;
-    List<Long> list = new ArrayList<Long>();
+
 
     @Autowired
     private ProductRepository productRepository;
@@ -43,9 +41,22 @@ public class ProductController {
 
     //Edit Product
     @PutMapping("/update")
-    public Product editProduct(@RequestBody Product products) {
-        this.productRepository.save(products);
-        return products;
+    public void editProduct(@RequestBody Product products) {
+        Boolean b = false;
+        for (int i = 0; i < productRepository.count(); i++) {
+            if (productRepository.findAll().get(i).getProductName().equals(products.getProductName()) || products.getProductId() <= 0) {
+                b = true;
+            }if((productRepository.getOne(products.getProductId()).getProductName()).equals(products.getProductName())){
+                b = false;
+
+            }else throw new SameProductNameException(products.getProductName());
+        }
+
+
+
+        if (b == false){
+            productRepository.save(products);
+        }
     }
 
     //Delete Product

@@ -28,7 +28,6 @@ import java.nio.file.Paths;
 public class ImagesController {
 
 
-
     private final Path path = Paths.get("images");
 
     @GetMapping("/get/{id:.+}")
@@ -36,37 +35,37 @@ public class ImagesController {
         Path file = path.resolve(id);
         Resource resource = new UrlResource(file.toUri());
         Resource file1 = resource;
-       System.out.println(file1.exists());
+        System.out.println(file1.exists());
         System.out.println(file1.isReadable());
         if(file1.exists() || file1.isReadable()){
             return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(file1);
         }else
-
         throw new NotFoundImageException(id);
     }
 
 
     @PostMapping ("/add")
-    public ResponseEntity<Object> fileUpload(@RequestParam("refun")MultipartFile file)throws IOException{
+    public ResponseEntity<Object> fileUpload(@RequestParam("refun")MultipartFile file)throws IOException {
         Path file1 = path.resolve(file.getOriginalFilename());
-        Resource resource = new UrlResource(file1.toUri());
-        File myFile = new File(resource.getURI());
-        if(myFile.exists()) {
-            throw new SameImageException(file.getOriginalFilename());
-        }else
-        myFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(myFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return  new ResponseEntity<Object>("The File Uploaded Successfully", HttpStatus.OK);
-    }
+            Resource resource = new UrlResource(file1.toUri());
+            File myFile = new File(resource.getURI());
+            if (myFile.exists()) {
+                throw new SameImageException(file.getOriginalFilename());
+
+            } else
+                myFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(myFile);
+            fos.write(file.getBytes());
+            fos.close();
+            return new ResponseEntity<Object>("The File Uploaded Successfully", HttpStatus.OK);
+        }
+
 
 
     @PutMapping("/update/{id:.+}")
     public void changeImage(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException {
         Path file1 = path.resolve(id);
         Path file2 = path.resolve(file.getOriginalFilename());
-
             File newFile = new File(file2.toUri());
             File oldFile = new File(file1.toUri());
             if(oldFile.exists()) {
@@ -77,7 +76,6 @@ public class ImagesController {
                 fos.close();
                 System.out.println("Success to update file");
             }else throw new NotFoundImageException(id);
-
 
     }
 
