@@ -64,18 +64,30 @@ public class ImagesController {
 
     @PutMapping("/update/{id:.+}")
     public void changeImage(@RequestParam("refun")MultipartFile file,@PathVariable("id")String id)throws IOException {
+        boolean b = false;
         Path file1 = path.resolve(id);
         Path file2 = path.resolve(file.getOriginalFilename());
             File newFile = new File(file2.toUri());
             File oldFile = new File(file1.toUri());
+
             if(oldFile.exists()) {
-                oldFile.delete();
-                newFile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(newFile);
-                fos.write(file.getBytes());
-                fos.close();
-                System.out.println("Success to update file");
-            }else throw new NotFoundImageException(id);
+                b = false;
+                if(newFile.exists()) {
+                    b = true;
+                    if(oldFile.equals(newFile)){
+                       b = false;
+                }
+                }
+            }if(b == false){
+            oldFile.delete();
+            newFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(newFile);
+            fos.write(file.getBytes());
+            fos.close();
+            System.out.println("Success to update file");
+        }if(b == true){
+                throw new SameImageException(id);
+        }
 
     }
 
