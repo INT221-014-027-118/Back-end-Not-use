@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import RefunGarantee.Int221.Exception.NotFoundException;
 import RefunGarantee.Int221.Exception.NotFoundNameException;
+import RefunGarantee.Int221.Exception.SameImageUrlException;
 import RefunGarantee.Int221.Exception.SameProductNameException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,9 @@ public class ProductController {
         for (int i = 0; i < productRepository.count(); i++) {
             if (productRepository.findAll().get(i).getProductName().equals(products.getProductName()) || products.getProductId() <= 0) {
                 b = true;
+            }if(productRepository.findAll().get(i).getImageUrl().equals(products.getImageUrl())){
+                b = true;
+                throw  new SameImageUrlException(products.getImageUrl());
             }
         }if((productRepository.getOne(products.getProductId()).getProductName()).equals(products.getProductName())){
             b = false;
