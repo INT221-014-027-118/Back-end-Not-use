@@ -44,23 +44,28 @@ public class ProductController {
     @PutMapping("/update")
     public void editProduct(@RequestBody Product products) {
         Boolean b = false;
+        Boolean b2 = false;
         for (int i = 0; i < productRepository.count(); i++) {
             if (productRepository.findAll().get(i).getProductName().equals(products.getProductName()) || products.getProductId() <= 0) {
                 b = true;
             }if(productRepository.findAll().get(i).getImageUrl().equals(products.getImageUrl())){
-                b = true;
-                throw  new SameImageUrlException(products.getImageUrl());
+                b2 = true;
+
             }
         }if((productRepository.getOne(products.getProductId()).getProductName()).equals(products.getProductName())){
             b = false;
 
+        }if((productRepository.getOne(products.getProductId()).getImageUrl()).equals(products.getImageUrl())){
+            b2 = false;
         }
         if(b==true){
             throw new SameProductNameException(products.getProductName());
+        } if(b2==true){
+            throw new SameImageUrlException(products.getImageUrl());
         }
 
 
-        if (b == false){
+        if (b == false && b2 == false){
             productRepository.save(products);
         }
     }
