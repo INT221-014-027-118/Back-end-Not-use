@@ -3,4 +3,4 @@ services:
     build: .
     container_name: backend
     ports:
-    - '9091:9091'
+    - '9092:9092'

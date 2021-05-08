@@ -13,6 +13,6 @@ FROM openjdk:11
 
 COPY --from=MAVEN_BUILD build/target/*.jar Int221-0.0.1-SNAPSHOT.jar
 
-EXPOSE 9091
+EXPOSE 9092
 
 CMD ["java", "-jar", "Int221-0.0.1-SNAPSHOT.jar"]
