@@ -35,8 +35,8 @@ public class ImagesController {
         Path file = path.resolve(id);
         Resource resource = new UrlResource(file.toUri());
         Resource file1 = resource;
-        System.out.println(file1.exists());
-        System.out.println(file1.isReadable());
+        System.out.println(id + " exist: "  + file1.exists());
+
         if(file1.exists() || file1.isReadable()){
             return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(file1);
         }else
@@ -99,7 +99,7 @@ public class ImagesController {
                 myFile.delete();
             }else throw new NotFoundImageException(id);
 
-        System.out.println(myFile.exists());
+        System.out.println(id + " exist: " + myFile.exists());
     }
 
 
